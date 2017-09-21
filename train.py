@@ -29,12 +29,12 @@ def batch_loop(iterator, f, epoch, phase, history):
         next_batch = iterator.next()
         X, Y = next_batch['data'], next_batch['labels']
 
-        if type(X) == list:
-            arrX = [item for item in X]
-            X = np.array(arrX)
-        if type(Y) == list:
-            arrY = [item for item in Y]
-            Y = np.array(arrY)
+        # if type(X) == list:
+        #     arrX = [item for item in X]
+        #     X = np.array(arrX)
+        # if type(Y) == list:
+        #     arrY = [item for item in Y]
+        #     Y = np.array(arrY)
 
         batch_size = X.shape[0]
         n_imgs += batch_size
