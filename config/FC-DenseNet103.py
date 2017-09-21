@@ -1,5 +1,5 @@
 from metrics import crossentropy
-from lasagne.updates import rmsprop
+from lasagne.updates import rmsprop, adam
 import imp
 import os
 
@@ -16,7 +16,7 @@ weight_decay = 0.00012 #.0001
 num_epochs = 750
 max_patience = 150
 loss_function = crossentropy
-optimizer = rmsprop # Consider adam for training on other dataset, or decrease epsilon to 1e-12
+optimizer = adam # Consider adam for training on other dataset, or decrease epsilon to 1e-12
 batch_size = 3
 
 # Architecture
