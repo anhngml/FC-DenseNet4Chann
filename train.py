@@ -115,7 +115,7 @@ def train(cf):
             updates = cf.optimizer(loss, params, learning_rate=lr_shared)
             train_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc], mode=theano.Mode(optimizer="fast_compile"), updates=updates)
         else:
-            val_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc])
+            val_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc], mode=theano.Mode(optimizer="fast_compile"))
 
         print('{} compilation took {:.3f} seconds'.format(key, time.time() - start_time_compilation))
 
@@ -128,7 +128,9 @@ def train(cf):
     history = {'train': init_history(), 'val': init_history(), 'test': init_history()}
     patience = 0
     best_jacc_val = 0
+    best_acc_val = 0
     best_epoch = 0
+    best_acc_epoch = 0
 
     if hasattr(cf, 'pretrained_model'):
         print('Validation score before training')
@@ -159,17 +161,24 @@ def train(cf):
 
         # Monitoring jaccard
         if history['val']['jaccard'][-1] > best_jacc_val:
-            out_str += ' (BEST)'
+            out_str += ' (BEST JACC)'
             best_jacc_val = history['val']['jaccard'][-1]
             best_epoch = epoch
             patience = 0
-            net.save(os.path.join(cf.savepath, 'model.npz'))
+            net.save(os.path.join(cf.savepath, 'model_best_jacc.npz'))
+        elif history['val']['accuracy'][-1] > best_acc_val:
+            out_str += ' (BEST ACC)'
+            best_acc_val = history['val']['accuracy'][-1]
+            best_acc_epoch = epoch
+            # patience = 0
+            net.save(os.path.join(cf.savepath, 'model_best_acc.npz'))
         else:
+            net.save(os.path.join(cf.savepath, 'model.npz_{}'.format(epoch % 10)))
             patience += 1
 
         print(out_str)
 
-        np.savez(os.path.join(cf.savepath, 'errors.npz'), metrics=history, best_epoch=best_epoch)
+        np.savez(os.path.join(cf.savepath, 'errors.npz'), metrics=history, best_epoch=best_epoch, best_acc_epoch=best_acc_epoch)
 
         # Learning rate scheduler
         lr_shared.set_value(lr_shared.get_value() * lr_decay)
@@ -177,7 +186,7 @@ def train(cf):
         # Finish training if patience has expired or max nber of epochs reached
         if patience == cf.max_patience or epoch == cf.num_epochs - 1:
             # Load best model weights
-            net.restore(os.path.join(cf.savepath, 'model.npz'))
+            net.restore(os.path.join(cf.savepath, 'model_best_acc.npz'))
 
             # Test
             print('Training ends\nTest')
@@ -206,10 +215,12 @@ def initiate_training(cf):
     if not os.path.exists(cf.savepath):
         os.makedirs(cf.savepath)
     else:
-        stop = input('\033[93m The following folder already exists {}. '
-                         'Do you want to overwrite it ? ([y]/n) \033[0m'.format(cf.savepath))
-        if stop == 'n':
-            return
+        pass
+
+        # stop = input('\033[93m The following folder already exists {}. '
+        #                  'Do you want to overwrite it ? ([y]/n) \033[0m'.format(cf.savepath))
+        # if stop == 'n':
+        #     return
 
     print('-' * 75)
     print('Config\n')

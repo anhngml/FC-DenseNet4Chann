@@ -16,6 +16,5 @@ job.bsub
 *.err
 *.out
 exp_*
-weights
-01
 config/cf.py
+DATA/

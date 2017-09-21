@@ -47,7 +47,7 @@ class VaihingenDataset(ThreadedDataset):
     _void_labels = [6] #[6]
 
     # optional arguments
-    data_shape = (300, 300, 4)
+    data_shape = (224, 224, 4)
     # mean = [0.39068785, 0.40521392, 0.41434407]
     # std = [0.29652068, 0.30514979, 0.30080369]
 
@@ -187,8 +187,8 @@ def test():
         seq_per_subset=0,
         seq_length=0,
         data_augm_kwargs={
-            'crop_size': (300, 300)},
-        return_one_hot=True,
+            'crop_size': (224, 224)},
+        return_one_hot=False,
         return_01c=True,
         return_list=True,
         use_threads=True)
@@ -199,7 +199,7 @@ def test():
         seq_per_subset=0,
         seq_length=0,
         data_augm_kwargs={
-            'crop_size': (300, 300)},
+            'crop_size': (224, 224)},
         return_one_hot=True,
         return_01c=True,
         return_list=True,
@@ -225,25 +225,26 @@ def test():
             mask = val[1][0]
             print(img.shape)
 
-            # result = Image.new("RGB", (448, 224), 'black')
-            #
-            # offset = (0, 0, 224, 224)
-            # result.paste(Image.fromarray(img, 'RGB'), offset)
-            # offset = (224, 0, 448, 224)
-            # result.paste(Image.fromarray(mask, 'RGB'), offset)
-            #
+            result = Image.new("RGB", (448, 224), 'black')
+
+            offset = (0, 0, 224, 224)
+            result.paste(Image.fromarray(img, 'RGB'), offset)
+            offset = (224, 0, 448, 224)
+            result.paste(Image.fromarray(mask, 'RGB'), offset)
+
             # result = np.asarray(result, dtype=np.uint8)
             # result = np.transpose(result, (1, 0, 2))
             # result.show()
 
-            # io.imshow(img)
-            # plt.show()
-            #
-            # io.imshow(mask * 50)
-            # plt.show()
-            #
+            io.imshow(img.astype('float32'))
+            plt.show()
+
+            io.imshow((mask * 51).astype('float32'))
+            plt.show()
+
             # sys.exit(errno.EACCES)
             # print(trainiter.next()[0].shape)
+
             print("Minibatch {}: {} seg".format(mb, (time.time() -
                                                      start_batch)))
         print("Epoch time: %s" % str(time.time() - start_epoch))

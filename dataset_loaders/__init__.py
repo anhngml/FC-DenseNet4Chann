@@ -3,14 +3,14 @@ from subprocess import check_output, CalledProcessError
 
 from dataset_loaders.images.Vaihingen import VaihingenDataset
 from dataset_loaders.images.camvid import CamvidDataset
-from dataset_loaders.images.cifar10 import Cifar10Dataset
-from dataset_loaders.images.cityscapes import CityscapesDataset
-from dataset_loaders.images.isbi_em_stacks import IsbiEmStacksDataset
-from dataset_loaders.images.kitti import KITTIdataset
-from dataset_loaders.images.mscoco import MSCocoDataset
-from dataset_loaders.images.pascalvoc import PascalVOCdataset
-from dataset_loaders.images.polyps912 import Polyps912Dataset
-from dataset_loaders.images.scene_parsing_MIT import SceneParsingMITDataset
+# from dataset_loaders.images.cifar10 import Cifar10Dataset
+# from dataset_loaders.images.cityscapes import CityscapesDataset
+# from dataset_loaders.images.isbi_em_stacks import IsbiEmStacksDataset
+# from dataset_loaders.images.kitti import KITTIdataset
+# from dataset_loaders.images.mscoco import MSCocoDataset
+# from dataset_loaders.images.pascalvoc import PascalVOCdataset
+# from dataset_loaders.images.polyps912 import Polyps912Dataset
+# from dataset_loaders.images.scene_parsing_MIT import SceneParsingMITDataset
 
 from dataset_loaders.videos.change_detection import ChangeDetectionDataset
 from dataset_loaders.videos.davis import DavisDataset

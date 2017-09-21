@@ -1,7 +1,7 @@
 from dataset_loaders.images.Vaihingen import VaihingenDataset
 from numpy.random import RandomState
 
-def load_data(dataset, train_crop_size=(300, 300), one_hot=False,
+def load_data(dataset, train_crop_size=(224, 224), one_hot=False,
               batch_size=10,
               horizontal_flip=False,
               rng=RandomState(0)):
