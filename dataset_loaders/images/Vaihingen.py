@@ -10,9 +10,6 @@ import sys
 from dataset_loaders.parallel_loader import ThreadedDataset
 
 
-floatX = 'float16'
-
-
 class VaihingenDataset(ThreadedDataset):
     '''The CamVid motion based segmentation dataset
 
@@ -42,6 +39,8 @@ class VaihingenDataset(ThreadedDataset):
     .. [Camvid2]
        https://github.com/alexgkendall/SegNet-Tutorial/tree/master/CamVid
     '''
+    floatX = 'float32'
+
     name = 'Vaihingen'
     non_void_nclasses = 6
     _void_labels = [6] #[6]
@@ -105,6 +104,10 @@ class VaihingenDataset(ThreadedDataset):
             self._filenames = filenames
         return self._filenames
 
+    @classmethod
+    def set_floatX(cls, floatx):
+        cls.floatX = floatx
+
     def __init__(self, which_set='train', *args, **kwargs):
 
         self.which_set = "val" if which_set == "valid" else which_set
@@ -165,7 +168,7 @@ class VaihingenDataset(ThreadedDataset):
             mask = np.asarray(mask, dtype=np.uint8)
             mask = mask.T
 
-            img = img.astype(floatX) / 255.
+            img = img.astype(self.floatX) / 255.
             mask = mask.astype('int32')
 
             X.append(img)

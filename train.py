@@ -74,7 +74,7 @@ def train(cf):
     train_iter, val_iter, test_iter = load_data(cf.dataset,
                                                 train_crop_size=cf.train_crop_size,
                                                 batch_size=cf.batch_size,
-                                                horizontal_flip=True,
+                                                horizontal_flip=True, floatx=cf.floatX
                                                 )
 
     n_classes = train_iter.get_n_classes
@@ -99,8 +99,8 @@ def train(cf):
     # Compile functions
     print('Compilation starts at ' + str(datetime.now()).split('.')[0])
     params = lasagne.layers.get_all_params(net.output_layer, trainable=True)
-    lr_shared = theano.shared(np.array(cf.learning_rate, dtype='float16'))
-    lr_decay = np.array(cf.lr_sched_decay, dtype='float16')
+    lr_shared = theano.shared(np.array(cf.learning_rate, dtype=cf.floatX))
+    lr_decay = np.array(cf.lr_sched_decay, dtype=cf.floatX)
 
     # Create loss and metrics
     for key in ['train', 'valid']:
@@ -108,7 +108,7 @@ def train(cf):
         # LOSS
         pred = get_output(net.output_layer, deterministic=key == 'valid',
                           batch_norm_update_averages=False, batch_norm_use_averages=False)
-        loss = crossentropy(pred, net.target_var, void_labels)
+        loss = crossentropy(pred, net.target_var, void_labels, cf.floatX)
 
         if cf.weight_decay:
             weightsl2 = regularize_network_params(net.output_layer, lasagne.regularization.l2)

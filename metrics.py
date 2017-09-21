@@ -63,7 +63,7 @@ def numpy_metrics(y_pred, y_true, n_classes, void_labels):
     return I, U, accuracy
 
 
-def crossentropy(y_pred, y_true, void_labels):
+def crossentropy(y_pred, y_true, void_labels, floatX):
     # Flatten y_true
     y_true = T.flatten(y_true)
     
@@ -82,6 +82,6 @@ def crossentropy(y_pred, y_true, void_labels):
 
     # Compute masked mean loss
     loss *= mask
-    loss = T.sum(loss) / T.sum(mask).astype('float16')
+    loss = T.sum(loss) / T.sum(mask).astype(floatX)
 
     return loss

@@ -4,10 +4,12 @@ from numpy.random import RandomState
 def load_data(dataset, train_crop_size=(224, 224), one_hot=False,
               batch_size=10,
               horizontal_flip=False,
-              rng=RandomState(0)):
+              rng=RandomState(0), floatx='float32'):
 
     if isinstance(batch_size, int):
         batch_size = [batch_size] * 3
+
+    VaihingenDataset.set_floatX(floatx)
 
     train_iter = VaihingenDataset(which_set='train',
                                batch_size=batch_size[0],

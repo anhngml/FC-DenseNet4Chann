@@ -15,7 +15,9 @@ class Network():
                  n_pool=4,
                  growth_rate=12,
                  n_layers_per_block=5,
-                 dropout_p=0.5):
+                 dropout_p=0.5,
+                 floatx='float32'
+                 ):
         """
         This code implements the Fully Convolutional DenseNet described in https://arxiv.org/abs/1611.09326
         The network consist of a downsampling path, where dense blocks and transition down are applied, followed
@@ -40,7 +42,7 @@ class Network():
             raise ValueError
 
         # Theano variables
-        self.input_var = T.tensor4('input_var', dtype='float16')  # input image
+        self.input_var = T.tensor4('input_var', dtype=floatx)  # input image
         self.target_var = T.tensor4('target_var', dtype='int32')  # target
 
         #####################
