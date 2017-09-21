@@ -100,8 +100,8 @@ def train(cf):
     # Compile functions
     print('Compilation starts at ' + str(datetime.now()).split('.')[0])
     params = lasagne.layers.get_all_params(net.output_layer, trainable=True)
-    lr_shared = theano.shared(np.array(cf.learning_rate, dtype=cf.floatX))
-    lr_decay = np.array(cf.lr_sched_decay, dtype=cf.floatX)
+    lr_shared = theano.shared(np.array(cf.learning_rate, dtype='float32'))
+    lr_decay = np.array(cf.lr_sched_decay, dtype='float32')
 
     # Create loss and metrics
     for key in ['train', 'valid']:
