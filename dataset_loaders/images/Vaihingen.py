@@ -172,7 +172,11 @@ class VaihingenDataset(ThreadedDataset):
             Y.append(mask)
             F.append(frame)
 
-        ret = {'data': np.array(X), 'labels': np.array(Y), 'subset': prefix, 'filenames': np.array(F)}
+        arr_X = np.array(X)
+        arr_Y = np.array(Y)
+        arr_F = np.array(F)
+
+        ret = {'data': arr_X, 'labels': arr_Y, 'subset': prefix, 'filenames': arr_F}
         return ret
 
 
