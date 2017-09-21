@@ -41,6 +41,7 @@ class Network():
         else:
             raise ValueError
 
+        print("Net precision config: " + floatx)
         # Theano variables
         self.input_var = T.tensor4('input_var', dtype=floatx)  # input image
         self.target_var = T.tensor4('target_var', dtype='int32')  # target

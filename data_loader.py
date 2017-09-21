@@ -10,7 +10,7 @@ def load_data(dataset, train_crop_size=(224, 224), one_hot=False,
         batch_size = [batch_size] * 3
 
     VaihingenDataset.set_floatX(floatx)
-
+    print("load data: " + VaihingenDataset.floatX)
     train_iter = VaihingenDataset(which_set='train',
                                batch_size=batch_size[0],
                                seq_per_video=0,

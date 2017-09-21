@@ -63,7 +63,7 @@ def batch_loop(iterator, f, epoch, phase, history):
 
 
 def train(cf):
-
+    print("Config: " + cf.floatX)
     ###############
     #  load data  #
     ###############
