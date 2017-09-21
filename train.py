@@ -28,7 +28,9 @@ def batch_loop(iterator, f, epoch, phase, history):
         # X, Y = iterator.next()
         next_batch = iterator.next()
         X, Y = next_batch['data'], next_batch['labels']
-        print(X)
+        X = np.array(X).astype('float16')
+        Y = np.array(Y).astype('float16')
+        # print(X)
         batch_size = X.shape[0]
         n_imgs += batch_size
 
