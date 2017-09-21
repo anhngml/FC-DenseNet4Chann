@@ -89,6 +89,7 @@ def train(cf):
 
     # Build model and display summary    
     net = cf.net
+    print(net.floatX)
     net.summary()
 
     # Restore

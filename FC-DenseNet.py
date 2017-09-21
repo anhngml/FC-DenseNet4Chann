@@ -8,6 +8,7 @@ from lasagne.nonlinearities import linear
 from layers import BN_ReLU_Conv, TransitionDown, TransitionUp, SoftmaxLayer
 
 class Network():
+    floatX = 'float32'
     def __init__(self,
                  input_shape=(None, 3, None, None),
                  n_classes=6,
@@ -34,6 +35,7 @@ class Network():
         :param dropout_p: dropout rate applied after each convolution (0. for not using)
         """
 
+        self.floatX = floatx
         if type(n_layers_per_block) == list:
             assert (len(n_layers_per_block) == 2 * n_pool + 1)
         elif type(n_layers_per_block) == int:
@@ -43,7 +45,7 @@ class Network():
 
         print("Net precision config: " + floatx)
         # Theano variables
-        self.input_var = T.tensor4('input_var', dtype=floatx)  # input image
+        self.input_var = T.tensor4('input_var', dtype=self.floatX)  # input image
         self.target_var = T.tensor4('target_var', dtype='int32')  # target
 
         #####################
