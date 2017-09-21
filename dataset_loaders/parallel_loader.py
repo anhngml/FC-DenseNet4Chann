@@ -540,7 +540,7 @@ class ThreadedDataset(object):
             else:
                 # NO THREADS
                 try:
-                    name_batch = self.names_batches.next()
+                    name_batch = next(self.names_batches)
                     data_batch = self.fetch_from_dataset(name_batch)
                     done = True
                 except StopIteration:

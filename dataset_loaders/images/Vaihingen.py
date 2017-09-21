@@ -190,7 +190,7 @@ def test():
             'crop_size': (224, 224)},
         return_one_hot=False,
         return_01c=True,
-        return_list=True,
+        # return_list=True,
         use_threads=True)
 
     validiter = VaihingenDataset(
@@ -202,8 +202,8 @@ def test():
             'crop_size': (224, 224)},
         return_one_hot=True,
         return_01c=True,
-        return_list=True,
-        use_threads=False)
+        # return_list=True,
+        use_threads=True)
 
     train_nsamples = trainiter.nsamples
     nbatches = trainiter.nbatches
@@ -221,6 +221,9 @@ def test():
             start_batch = time.time()
 
             val = trainiter.next()
+            X, Y = val['data'], val['labels']
+            shape = X.shape
+            print(shape)
             img = val[0][0]
             mask = val[1][0]
             print(img.shape)
