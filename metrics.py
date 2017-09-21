@@ -82,6 +82,6 @@ def crossentropy(y_pred, y_true, void_labels, floatX):
 
     # Compute masked mean loss
     loss *= mask
-    loss = T.sum(loss) / T.sum(mask).astype(floatX)
+    loss = T.sum(loss) / T.sum(mask).astype('float32')
 
     return loss
