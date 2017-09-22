@@ -175,19 +175,20 @@ def train(cf):
             best_epoch = epoch
             patience = 0
             net.save(os.path.join(cf.savepath, 'model_best_jacc.npz'))
-        elif history['val']['accuracy'][-1] > best_acc_val:
+
+        if history['val']['accuracy'][-1] > best_acc_val:
             out_str += ' (BEST ACC)'
             best_acc_val = history['val']['accuracy'][-1]
             best_acc_epoch = epoch
             # patience = 0
             net.save(os.path.join(cf.savepath, 'model_best_acc.npz'))
         else:
-            net.save(os.path.join(cf.savepath, 'model_{}.npz'.format(epoch % 10)))
             patience += 1
-
+        net.save(os.path.join(cf.savepath, 'model_{}.npz'.format(epoch % 10)))
         print(out_str)
 
-        np.savez(os.path.join(cf.savepath, 'errors.npz'), metrics=history, best_epoch=best_epoch, best_acc_epoch=best_acc_epoch)
+        np.savez(os.path.join(cf.savepath, 'errors.npz'),
+                 metrics=history, best_epoch=best_epoch, best_acc_epoch=best_acc_epoch)
 
         # Learning rate scheduler
         lr_shared.set_value(lr_shared.get_value() * lr_decay)
@@ -200,7 +201,7 @@ def train(cf):
             # Test
             print('Training ends\nTest')
             if test_iter.get_n_samples == 0:
-                print ('No test set')
+                print('No test set')
             else:
                 history = batch_loop(test_iter, val_fn, epoch, 'test', history)
 
