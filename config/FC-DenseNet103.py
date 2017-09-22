@@ -12,11 +12,11 @@ train_crop_size = (224, 224) # None for full size
 seed = 0
 learning_rate = 1e-3
 lr_sched_decay = 0.995 # Applied each epocjh
-weight_decay = 0.00012 #.0001
+weight_decay = 0.0001 #.0001
 num_epochs = 750
 max_patience = 150
 loss_function = crossentropy
-optimizer = adam # Consider adam for training on other dataset, or decrease epsilon to 1e-12
+optimizer = rmsprop # Consider adam for training on other dataset, or decrease epsilon to 1e-12
 batch_size = 3
 
 # Architecture
