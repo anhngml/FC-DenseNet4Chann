@@ -70,7 +70,7 @@ def train(cf):
 
     print('-' * 75)
     print('Loading data')
-    #TODO ; prepare a public version of the data loader
+    # TODO ; prepare a public version of the data loader
     train_iter, val_iter, test_iter = load_data(cf.dataset,
                                                 train_crop_size=cf.train_crop_size,
                                                 batch_size=cf.batch_size,
@@ -122,9 +122,11 @@ def train(cf):
         start_time_compilation = time.time()
         if key == 'train':
             updates = cf.optimizer(loss, params, learning_rate=lr_shared)
-            train_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc], mode=theano.Mode(optimizer="fast_compile"), updates=updates)
+            train_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc],
+                                       mode=theano.Mode(optimizer="fast_compile"), updates=updates)
         else:
-            val_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc], mode=theano.Mode(optimizer="fast_compile"))
+            val_fn = theano.function([net.input_var, net.target_var], [loss, I, U, acc],
+                                     mode=theano.Mode(optimizer="fast_compile"))
 
         print('{} compilation took {:.3f} seconds'.format(key, time.time() - start_time_compilation))
 
@@ -168,6 +170,15 @@ def train(cf):
                 history['train']['loss'][-1], history['train']['jaccard'][-1], history['train']['accuracy'][-1],
                 history['val']['loss'][-1], history['val']['jaccard'][-1], history['val']['accuracy'][-1])
 
+        # Save last 10 models
+        net.save(os.path.join(cf.savepath, 'model_{}.npz'.format(epoch)))
+        remove_file = os.path.join(cf.savepath, 'model_{}.npz'.format(epoch - 10))
+        if os.path.exists(remove_file):
+            try:
+                os.remove(remove_file)
+            except:
+                pass
+
         # Monitoring jaccard
         if history['val']['jaccard'][-1] > best_jacc_val:
             out_str += ' (BEST JACC)'
@@ -184,7 +195,15 @@ def train(cf):
             net.save(os.path.join(cf.savepath, 'model_best_acc.npz'))
         else:
             patience += 1
-        net.save(os.path.join(cf.savepath, 'model_{}.npz'.format(epoch % 10)))
+
+        # net.save(os.path.join(cf.savepath, 'model_{}.npz'.format(epoch)))
+        # remove_file = os.path.join(cf.savepath, 'model_{}.npz'.format(epoch - 10))
+        # if os.path.exists(remove_file):
+        #     try:
+        #         os.remove(remove_file)
+        #     except:
+        #         pass
+
         print(out_str)
 
         np.savez(os.path.join(cf.savepath, 'errors.npz'),
@@ -205,7 +224,7 @@ def train(cf):
             else:
                 history = batch_loop(test_iter, val_fn, epoch, 'test', history)
 
-                print ('Average cost test = {:.5f} | jacc test = {:.5f} | acc_test = {:.5f} '.format(
+                print('Average cost test = {:.5f} | jacc test = {:.5f} | acc_test = {:.5f} '.format(
                     history['test']['loss'][-1],
                     history['test']['jaccard'][-1],
                     history['test']['accuracy'][-1]))
@@ -217,7 +236,6 @@ def train(cf):
 
 
 def initiate_training(cf):
-
     # Seed : to make experiments reproductible, use deterministic convolution in CuDNN with THEANO_FLAGS
     np.random.seed(cf.seed)
     theano.tensor.shared_randomstreams.RandomStreams(cf.seed)
@@ -247,7 +265,6 @@ def initiate_training(cf):
 
 
 if __name__ == '__main__':
-
     # To launch an experiment, use the following command line :
     # THEANO_FLAGS='device=cuda,optimizer=fast_compile,optimizer_including=fusion' python train.py -c config_path -e experiment_name
     # Logs of the training will be stored in the folder cf.savepath/experiment_name
