@@ -18,3 +18,4 @@ job.bsub
 exp_*
 config/cf.py
 DATA/
+!/job.bsub

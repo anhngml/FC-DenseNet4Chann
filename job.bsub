@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+#BSUB -J 4chann_dn
+#!BSUB -n 8 
+#BSUB -q gpu
+#BSUB -e %J.err
+#BSUB -o %J.out
+
+module load cuda
+ 
+
+THEANO_FLAGS='device=cuda,optimizer=fast_compile,optimizer_including=fusion' python train.py -c config/FC-DenseNet103.py -e exp_drpout_20_L2_0001_e5

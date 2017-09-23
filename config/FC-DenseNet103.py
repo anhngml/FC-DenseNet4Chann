@@ -32,7 +32,7 @@ net = imp.load_source('Net', model_path).Network(
     n_pool=5,
     growth_rate=16,
     n_layers_per_block=[4, 5, 7, 10, 12, 15, 12, 10, 7, 5, 4],
-    dropout_p=0.25, floatx=floatX)
+    dropout_p=0.2, floatx=floatX)
 
 ##############################################################################
 
