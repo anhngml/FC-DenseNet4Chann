@@ -17,7 +17,7 @@ num_epochs = 750
 max_patience = 150
 loss_function = crossentropy
 optimizer = rmsprop # Consider adam for training on other dataset, or decrease epsilon to 1e-12
-batch_size = 5
+batch_size = 3
 
 # Architecture
 # pretrained_model= None # path of the weights of a pretrained network
