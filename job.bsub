@@ -9,4 +9,4 @@
 module load cuda
  
 
-THEANO_FLAGS='device=cuda,optimizer=fast_compile,optimizer_including=fusion' python train.py -c config/FC-DenseNet103.py -e exp_drpout_20_L2_0001_e5
+THEANO_FLAGS='device=cuda,optimizer=fast_compile,optimizer_including=fusion' python train.py -c config/FC-DenseNet103.py -e exp_drpout_20_L2_0001_e5_2
